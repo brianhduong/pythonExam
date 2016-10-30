@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> USER PAGE </title>
+	<form action="/home" method="GET">
+	<input type="submit" value="Dashboard">
+	</form>
+	<form action="/logout" method="GET">
+	<input type="submit" value="Logout">
+	</form>
+</head>
+<body>
+<h1> Posts By: {{user.first_name}} </h1>
+<h3> count: {{quotes|length}}</h3>
+	{% if quotes|length > 0%}
+		{% for quote in quotes %}
+		<h3> {{quote.author}}: {{quote.text}} </h3>
+		{% endfor%}
+		{% endif %}
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>HOME PAGE</title>
+	<p> Welcome User {{request.session.user}} </p>
+	<form action="/logout" method="GET">
+	<input type="submit" value="Logout">
+	</form>
+</head>
+<body>
+<h1> Quotable Quotes </h1>
+		{% if quotes|length > 0%}
+		{% for quote in quotes %}
+			<h3> {{quote.author}}: {{quote.text}} </h3>
+			<p> Posted by <form action="/userPage/{{quote.user.id}}" method="GET">
+			<input type="submit" value="{{quote.user.first_name}}">
+			</form></p>
+			<form action="/addToFavorites/{{quote.id}}" method="POST">
+			{% csrf_token %} 
+			<input type="submit" value="Add To Favorites">
+			</form>
+		{% endfor%}
+		{% endif %}
+<h1> Favorite Quotes </h1>
+		{% if favorites|length > 0%}
+		{% for fav in favorites %}
+			<h3> {{fav.quote.author}}: {{fav.quote.text}} </h3>
+			<p> Posted by <form action="/userPage/{{fav.quote.user.id}}" method="GET">
+			<input type="submit" value="{{fav.quote.user.first_name}}">
+			</form></p>
+		<form action="/removeFave/{{fav.id}}" method="GET">
+		<input type="submit" value="Remove From Favorites">
+		</form>
+		{% endfor%}
+		{% endif %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<h1> Add a quote </h1>
+<form action="/addQuote" method="POST">
+ {% csrf_token %}
+author: <input type = "text" name = "author"> <br>
+quote: <input type = "text" name = "text"> <br>
+<input type = "submit" value = "submit quote"> <br>
+</form>
+</body>
+</html>
